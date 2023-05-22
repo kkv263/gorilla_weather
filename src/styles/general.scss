@@ -32,6 +32,10 @@ body {
   @media (max-width: 767px) {
     padding: 16px;
   }
+
+  @media (max-width: 479px) {
+    padding: 16px 8px;
+  }
 }
 
 // Footer

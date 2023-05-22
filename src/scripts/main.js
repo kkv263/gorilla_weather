@@ -40,7 +40,7 @@ waitForElement('.location').then((location) => {
     fetch(`https://pfa.foreca.com/api/v1/location/search/${value}?token=${WEATHER_API_TOKEN}`).then(res => res.json()).then(data => {
       const { locations: [result]} = data;
       localStorage.setItem('weatherapp_location', JSON.stringify(result));
-      fetchWeather(result.id, result.name)
+      fetchWeather(result.id, result.name, result.timezone)
     }).catch((error) => {
       errorText.classList.remove('hidden');
       button.classList.remove('loading');
@@ -50,7 +50,7 @@ waitForElement('.location').then((location) => {
 })
 
 // Fetch weather information from API. Make sure all elements that are being changed exists and all API calls are done.
-const fetchWeather = (location, name) => {
+const fetchWeather = (location, name, timezone) => {
   Promise.all([fetch(`https://pfa.foreca.com/api/v1/forecast/daily/${location}?token=${WEATHER_API_TOKEN}&tempunit=F&windunit=MPH`).then(res => res.json()),
   fetch(`https://pfa.foreca.com/api/v1/current/${location}?token=${WEATHER_API_TOKEN}&tempunit=F&windunit=MPH`).then(res => res.json()),
   waitForElement('.forecast__list'),
@@ -159,9 +159,20 @@ const fetchWeather = (location, name) => {
     if (!OPENAI_API_TOKEN) { return; }
     const summary = document.querySelector('.forecast__summary p');
     summary.textContent = 'AI Generating Summary...'
- 
-    const prompt = `Can you create a summary of the weather with this information without using numbers? Temperature: ${current.temperature}, Feels like: ${current.feelsLikeTemp}, Humidity: ${current.relHumidity}, Wind speed: ${current.windSpeed}, Wind Direction: ${getCardinalDirection(current.windDir)}, Precipitation chance:${current.precipRate} Location:${name}`
-    req = fetch('https://api.openai.com/v1/chat/completions', {
+
+    const dateAndTime = new Intl.DateTimeFormat([], {
+      timeZone: timezone,
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+    });
+    const timeOfDay = current.symbol.includes('n') ? 'Night' : 'Day';
+  
+    const prompt = `Can you create a summary of the weather with this information without using numbers? Temperature: ${current.temperature}, Feels like: ${current.feelsLikeTemp}, Humidity: ${current.relHumidity}, Wind speed: ${current.windSpeed}, Wind Direction: ${getCardinalDirection(current.windDir)}, Precipitation chance:${current.precipRate}, Location:${name}, Time:${dateAndTime}, Time of Day: ${timeOfDay}`;
+    fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + OPENAI_API_TOKEN,
@@ -179,8 +190,26 @@ const fetchWeather = (location, name) => {
       })
     }).then((res) => res.json()).then((data) => {
       const {choices:[msg]} = data
-      summary.textContent = msg.message.content;
-    }).catch(error);
+      const txt = msg.message.content.trim();
+      let i = 0;
+      let start = false;
+      summary.textContent = '';
+      
+      const typeWriter = () => {
+        if (i < txt.length) {
+          // Sometimes AI randomly generates blanks and punctuation at the beginning.
+          // Conditional to prevent and make sure it starts with a character.
+          if (txt.charAt(i) !== '' && !txt.charAt(i).match(/\W/)) { start = true}
+          if (start) {summary.textContent += txt.charAt(i);}
+          i++;
+          setTimeout(typeWriter, 10);
+        }
+      }
+
+      typeWriter();
+
+      // summary.textContent = msg.message.content;
+    }).catch((error) => {console.log(error)});
   });
 }
 
