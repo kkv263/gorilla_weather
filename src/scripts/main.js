@@ -173,7 +173,7 @@ const fetchWeather = (location, name) => {
           {'role': 'user', 'content': prompt},
           {
             'role': 'system',
-            'content': 'You are an weather forecaster with a very exciting personality'
+            'content': `You are an weather forecaster with a very exciting personality from the area of ${name}`
           }
         ]
       })
