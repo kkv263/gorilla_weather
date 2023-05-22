@@ -31,8 +31,9 @@ Before reading on, I recommend you have the live link open to compare and have a
 - Vanilla JS
 - HTML
 - SCSS
-
-I used SCSS for this project since I believe it's easier to organize and manage styling. SCSS allows you to code split into different files, variables, nest, and works very well with BEM naming.
+	- I used SCSS for this project since I believe it's easier to organize and manage styling. SCSS allows you to code split into different files, variables, nest, and works very well with BEM naming. 
+- Vite
+	- Vite is a tool that makes it fast to setup a frontend project. I used the vanilla template so it comes as a minimal barebones project. All HTML/CSS and JS are vanilla and no frameworks were used.
 
 #### Location Search:
 There is a search bar once you load the page to look up weather information about a location. Because we use Foreca's API valid values will depend on what gets put through their API. 
