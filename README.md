@@ -26,6 +26,7 @@ pnpm dev
 ```
 Open http://localhost:5173/  with your browser to see the result.
 
+(There is some caching involved, to clear use `localStorage.clear();`)
 
 ## Design / Implementation
 
