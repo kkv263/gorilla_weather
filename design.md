@@ -1,5 +1,5 @@
 ## Design
-Live Link: https://gorilla-weather-nju6mvnv8-kkv263.vercel.app/
+Live Link: https://gorilla-weather.vercel.app/
 
 Before reading on, I recommend you have the live link open to compare and have as a visual reference.
 

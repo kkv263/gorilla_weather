@@ -1,6 +1,6 @@
 This is a frontend project scaffolded with [vite](https://vitejs.dev/guide/)'s vanilla template. 
 
-Live Link:  https://gorilla-weather-nju6mvnv8-kkv263.vercel.app/
+Live Link:  https://gorilla-weather.vercel.app/
 
 ## Running Locally
 
