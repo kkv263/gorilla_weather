@@ -119,7 +119,7 @@ const fetchWeather = (location, name, timezone) => {
           </div>
         </div>
         <div class="forecast__main-right">
-          <div class="forecast__day forecast__day--mobile">FORECAST TODAY - ${days[dayOfWeek]}</div>
+          <div class="forecast__day forecast__day--mobile">${name} - ${days[dayOfWeek]}</div>
           <div class="forecast__main-forecast">
             <div class="forecast__icon"><img src="https://developer.foreca.com/static/images/symbols/${current.symbol}.png" alt=${current.symbolPhrase} /></div>
             <div class="forecast__temp">${current.temperature}&deg;</div>
