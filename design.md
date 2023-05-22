@@ -38,9 +38,9 @@ Before reading on, I recommend you have the live link open to compare and have a
 #### Location Search:
 There is a search bar once you load the page to look up weather information about a location. Because we use Foreca's API valid values will depend on what gets put through their API. 
 
-Blank values and invalid values will throw an error with red text stating so. Once a valid location is placed, we cache that value in `localStorage` and fetch information about that location's weather. The search button text changes from "Search" to "Loading" to indicate the API working.
+Blank values and invalid values will throw an error with red text stating so. Once a valid location is placed, we cache that value in `localStorage` and fetch information about that location's weather. The search button text changes from "Search" to "Loading" to indicate the API working. 
 
-The next time the user visits the page, the last searched result will immediately populate without the user having to search.
+The next time the user visits the page, the last searched result will immediately populate without the user having to search. **To clear cache, use `localStorage.clear()` in the console.**
 
 #### Weather:
 Because we depend on a lot of information from Foreca's API, we have a utility function called `waitForElement`  to make sure elements we are changing exist in the DOM. We wait for all API calls to finish and all waitForElement promises to finish. 
