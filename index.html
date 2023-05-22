@@ -2,9 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/sun.svg" />
+    <!-- <link rel="icon" type="image/svg+xml" href="/sun.svg" /> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
+    <title>Weather App</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Bungee+Shade&family=Roboto+Mono&display=swap" rel="stylesheet">
@@ -13,36 +13,34 @@
   </head>
   <body>
     <main>
+      <header class="forecast__header">
+        <div class="container">
+          <h1 class="forecast__headline">The Weather Report</h1>
+          <div class="forecast__subheadline">
+            <div>A WEATHER APP</div>
+            <div class="forecast__date"></div>
+            <div>EDITION #1</div>
+          </div>
+        </div>
+      </header>
+
+      <section class="location">
+        <div class="container">
+          <label class="location__label" for="location">Find weather data at a location. Try a city or zipcode</label>
+          <input placeholder="Example: 90210" id="location" class="location__input" type="text" />
+          <button type="button" class="location__search"></button>
+        </div>
+
+      </section>
+
       <section class="forecast">
         <div class="container">
-          <header class="forecast__header">
-            <h1 class="forecast__headline">The Weather Report</h1>
-            <div class="forecast__subheadline">
-              <div>A WEATHER APP</div>
-              <div class="forecast__date"></div>
-              <div>EDITION #1</div>
-            </div>
-          </header>
           <div class="forecast__main">
-            <div class="forecast__list-item">
-            </div>
           </div>
 
           <div class="forecast__weekly">
             <h2>Weekly Forecast</h2>
             <ul class="forecast__list">
-              <li class="forecast__list-item">
-              </li>
-              <li class="forecast__list-item">
-              </li>
-              <li class="forecast__list-item">
-              </li>
-              <li class="forecast__list-item">
-              </li>
-              <li class="forecast__list-item">
-              </li>
-              <li class="forecast__list-item">
-              </li>
             </ul>
           </div>
         </div>

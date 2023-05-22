@@ -30,9 +30,93 @@ body {
   max-width: 1280px;
   margin: 0 auto;
   padding: 16px 32px 32px;
+  width: 100%;
 
   @media (max-width: 767px) {
     padding: 16px;
+  }
+}
+
+// Location 
+.location {
+  display: flex;
+  height: 40vh;
+  align-items: center;
+}
+
+.location__label {
+  font-size: 20px;
+  padding-bottom: 16px;
+  display: block;
+}
+
+.location__input {
+  width: 100%;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.location__search {
+  background-color: #FFE142;
+  border: 0;
+  padding: 8px 16px;
+  font-size: 24px;
+  position: relative;
+  cursor: pointer;
+  transition: all .3s ease;
+  min-width: 180px;
+  min-height: 48px;
+
+  &:before {
+    content: 'Search';
+  }
+
+  &:hover,
+  &:focus {
+    background-color: lighten(#FFE142, 20);
+
+    &:after {
+      bottom: -8px;
+      right: -8px;
+    }
+  }
+
+  &.loading {
+    pointer-events: none;
+    background-color: #777;
+    &::before {
+      content: 'Loading...';
+    }
+  }
+
+  &:after {
+    transition: all .3s ease;
+    z-index: -1;
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    width: 100%;
+    height: 100%;
+    background-color: #1d1d1d;
+  }
+}
+
+@keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// Forecast
+.forecast {
+  display: none;
+
+  &.active {
+    display: block;
   }
 }
 
@@ -49,7 +133,8 @@ body {
   position: relative;
   font-size: 48px;
   margin: 0;
-  padding-bottom: 16px
+  padding-bottom: 16px;
+  text-align: center;
 }
 
 .forecast__subheadline {
@@ -128,6 +213,7 @@ body {
   .forecast__icon {
     width: 180px;
     height: 180px;
+    padding-bottom: 16px;
     img {
       object-fit: cover;
       width: 100%;
