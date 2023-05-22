@@ -50,9 +50,6 @@
   &.loading {
     pointer-events: none;
     background-color: #777;
-    &::before {
-      content: 'Loading...';
-    }
   }
 
   &:after {

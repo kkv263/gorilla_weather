@@ -35,7 +35,7 @@ waitForElement('.location').then((location) => {
     }
     
     button.classList.add('loading');
-    button.value = 'Loading...';
+    button.textContent = 'Loading...';
 
     fetch(`https://pfa.foreca.com/api/v1/location/search/${value}?token=${WEATHER_API_TOKEN}`).then(res => res.json()).then(data => {
       const { locations: [result]} = data;
@@ -44,7 +44,7 @@ waitForElement('.location').then((location) => {
     }).catch((error) => {
       errorText.classList.remove('hidden');
       button.classList.remove('loading');
-      button.value = 'Search';
+      button.textContent = 'Search';
     });;
   })
 })
@@ -152,7 +152,7 @@ const fetchWeather = (location, name) => {
     forecastContainer.classList.add('active');
     button.classList.remove('loading');
     errorText.classList.add('hidden');
-    button.value = 'Search';
+    button.textContent = 'Search';
     input.value = name;
 
     // Fetch from OpenAI to create a summary of the weather.

@@ -118,10 +118,14 @@
   padding: 16px 16px 16px 0;
 }
 
+.forecast__summary__img {
+  max-width: 256px;
+}
+
 .forecast__bottom {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
-  background-color: #FFE142;
+  background-color: $primary-color;
   padding: 8px 16px;
   justify-content: space-between;
   border-radius: 4px;
@@ -130,6 +134,7 @@
   max-width: 120px;
   margin-left: 32px;
   height: 100%;
+  color: $off-black;
 
   @media (max-width: 1023px) {
     grid-template-columns: repeat(3, 1fr);
