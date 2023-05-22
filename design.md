@@ -54,3 +54,4 @@ User's can repeat with a new search to replace the current content on the page w
 - Only interactive element is the search form which is accessible (keyboard)
 - A lot of distinction and important information are conveyed through the black or yellow colors.
 - Symbols are from Foreca API and adjusted slight grayscale to fit the theme.
+- Code and Assets are minified and mostly SVG's which are a very small in filesize.
