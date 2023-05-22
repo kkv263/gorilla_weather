@@ -1,54 +1,74 @@
-import { waitForElement, getCardinalDirection } from './src/scripts/util.js'
+import { waitForElement, getCardinalDirection } from './util.js'
 
-// Wait for forecast list to load, and insert days into HTML starting with current day.
-const API_TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9wZmEuZm9yZWNhLmNvbVwvYXV0aG9yaXplXC90b2tlbiIsImlhdCI6MTY4NDcxMTU1MywiZXhwIjo5OTk5OTk5OTk5LCJuYmYiOjE2ODQ3MTE1NTMsImp0aSI6IjI3NmY5YjUyZmQwY2FlZjkiLCJzdWIiOiJzcHJhbnRtYXN0ZXIiLCJmbXQiOiJYRGNPaGpDNDArQUxqbFlUdGpiT2lBPT0ifQ.opBKIMnkMzVAOgJVwn26g7E1ZXMJre0TeuSENhbksfI'
+// API TOKENS
+const WEATHER_API_TOKEN = import.meta.env.VITE_WEATHER_API_KEY;
+const OPENAI_API_TOKEN = import.meta.env.VITE_OPENAI_API_KEY ?? '';
 
+// Set up constants here.
 const date = new Date();
 const dayOfWeek = date.getDay();
 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const formattedDate = date.toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"});
+const cachedLocation = localStorage.getItem('weatherapp_location')
 
+// Change the date to the current date in the header
 waitForElement('.forecast__date').then((date) => {
   date.textContent = formattedDate.toUpperCase();
 });
 
+// Wait for location element and search through API with inserted value in search.
+// Also handles errors through API and blank values.
+// Location is cached in localStorage so that next visit already displays weather for user's last searched location
 waitForElement('.location').then((location) => {
   const input = location.querySelector('.location__input');
+  const form = location.querySelector('.location__form');
   const button = location.querySelector('.location__search');
+  const errorText = location.querySelector('.location__error');
 
-  button.addEventListener('click', () => {
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
     const { value } = input;
 
-    if (!value) { return; }
+    if (!value) { 
+      errorText.classList.remove('hidden');
+      return; 
+    }
+    
     button.classList.add('loading');
+    button.value = 'Loading...';
 
-    fetch(`https://pfa.foreca.com/api/v1/location/search/${value}?token=${API_TOKEN}`).then(res => res.json()).then(data => {
+    fetch(`https://pfa.foreca.com/api/v1/location/search/${value}?token=${WEATHER_API_TOKEN}`).then(res => res.json()).then(data => {
       const { locations: [result]} = data;
+      localStorage.setItem('weatherapp_location', JSON.stringify(result));
       fetchWeather(result.id, result.name)
     }).catch((error) => {
-      console.log(error);
+      errorText.classList.remove('hidden');
       button.classList.remove('loading');
+      button.value = 'Search';
     });;
   })
 })
 
+// Fetch weather information from API. Make sure all elements that are being changed exists and all API calls are done.
 const fetchWeather = (location, name) => {
-  Promise.all([fetch(`https://pfa.foreca.com/api/v1/forecast/daily/${location}?token=${API_TOKEN}&tempunit=F&windunit=MPH`).then(res => res.json()),
-  fetch(`https://pfa.foreca.com/api/v1/current/${location}?token=${API_TOKEN}&tempunit=F&windunit=MPH`).then(res => res.json()),
+  Promise.all([fetch(`https://pfa.foreca.com/api/v1/forecast/daily/${location}?token=${WEATHER_API_TOKEN}&tempunit=F&windunit=MPH`).then(res => res.json()),
+  fetch(`https://pfa.foreca.com/api/v1/current/${location}?token=${WEATHER_API_TOKEN}&tempunit=F&windunit=MPH`).then(res => res.json()),
   waitForElement('.forecast__list'),
   waitForElement('.forecast__main'),
   waitForElement('.forecast'),
   ]).then(([forecastData, currentData, forecastList, forecastMain, forecastContainer]) => {
     const { forecast } = forecastData;
     const { current } = currentData;
+    const errorText = document.querySelector('.location__error');
     const button = document.querySelector('.location__search');
-
+    const input = document.querySelector('.location__input');
 
     const indexArray = Array.from(new Array(7), (x,i) => i)
   
     // Reordered days array so that current day is at the start of the list.
     const daysReordered = indexArray.slice(dayOfWeek).concat(indexArray.slice(0, dayOfWeek))
   
+    // Update HTML with fetched information
     let forecastHTML = ``;
   
     for (let i = 1; i < daysReordered.length; i++) {
@@ -59,7 +79,7 @@ const fetchWeather = (location, name) => {
           <div class="forecast__day">
             <span>${days[index].substring(0, 3).toUpperCase()}</span>
             <div class="forecast__icon">
-              <img src="https://developer.foreca.com/static/images/symbols/${forecast[index].symbol}.png" />
+              <img src="https://developer.foreca.com/static/images/symbols/${forecast[index].symbol}.png" alt="weather icon" />
             </div>
           </div>
           <div class="forecast__temp-container">
@@ -95,13 +115,13 @@ const fetchWeather = (location, name) => {
           <div class="forecast__day forecast__day--desktop">${name} - ${days[dayOfWeek]}</div>
           <div class="forecast__summary">
             <h2>Daily Summary:</h2>
-            <p>In Texas today, the weather brings mild temperatures, ranging from a cool start to a comfortably warm peak. However, due to the wind chill, it may feel slightly colder than the actual temperature. The air carries a noticeable level of humidity, indicating a fair amount of moisture in the atmosphere. A gentle breeze blows from the north, providing a pleasant and calming effect. Fortunately, there is no chance of rain or any other form of precipitation expected for the day.</p>
+            <p>Today is going to be a good day!</p>
           </div>
         </div>
         <div class="forecast__main-right">
           <div class="forecast__day forecast__day--mobile">FORECAST TODAY - ${days[dayOfWeek]}</div>
           <div class="forecast__main-forecast">
-            <div class="forecast__icon"><img src="https://developer.foreca.com/static/images/symbols/${current.symbol}.png" /></div>
+            <div class="forecast__icon"><img src="https://developer.foreca.com/static/images/symbols/${current.symbol}.png" alt=${current.symbolPhrase} /></div>
             <div class="forecast__temp">${current.temperature}&deg;</div>
             <div class="forecast__unit">Fahrenheit</div>
           </div>
@@ -131,8 +151,45 @@ const fetchWeather = (location, name) => {
     forecastList.innerHTML = forecastHTML;
     forecastContainer.classList.add('active');
     button.classList.remove('loading');
+    errorText.classList.add('hidden');
+    button.value = 'Search';
+    input.value = name;
+
+    // Fetch from OpenAI to create a summary of the weather.
+    if (!OPENAI_API_TOKEN) { return; }
+    const summary = document.querySelector('.forecast__summary p');
+    summary.textContent = 'AI Generating Summary...'
+ 
+    const prompt = `Can you create a summary of the weather with this information without using numbers? Temperature: ${current.temperature}, Feels like: ${current.feelsLikeTemp}, Humidity: ${current.relHumidity}, Wind speed: ${current.windSpeed}, Wind Direction: ${getCardinalDirection(current.windDir)}, Precipitation chance:${current.precipRate} Location:${name}`
+    req = fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + OPENAI_API_TOKEN,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        'model': 'gpt-3.5-turbo',
+        'messages': [
+          {'role': 'user', 'content': prompt},
+          {
+            'role': 'system',
+            'content': 'You are an weather forecaster with a very exciting personality'
+          }
+        ]
+      })
+    }).then((res) => res.json()).then((data) => {
+      const {choices:[msg]} = data
+      summary.textContent = msg.message.content;
+    }).catch(error);
   });
 }
+
+// If there's a previous search, fetch the weather.
+if (cachedLocation) {
+  const results = JSON.parse(cachedLocation)
+  fetchWeather(results.id, results.name)
+}
+
 
 // Example Object
 // {

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <!-- <link rel="icon" type="image/svg+xml" href="/sun.svg" /> -->
+    <link rel="icon" type="image/svg+xml" href="/dsun.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Weather App</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,18 +26,19 @@
 
       <section class="location">
         <div class="container">
-          <label class="location__label" for="location">Find weather data at a location. Try a city or zipcode</label>
-          <input placeholder="Example: 90210" id="location" class="location__input" type="text" />
-          <button type="button" class="location__search"></button>
+          <form class="location__form" action="">
+            <label class="location__label" for="location">Find weather data at a location. Try a city or zipcode</label>
+            <input placeholder="Example: 90210" id="location" class="location__input" type="text" />
+            <div class="location__error hidden">Please enter a valid location or zipcode.</div>
+            <input value="Search" type="submit" class="location__search"></input>
+          </form>
         </div>
-
       </section>
 
       <section class="forecast">
         <div class="container">
           <div class="forecast__main">
           </div>
-
           <div class="forecast__weekly">
             <h2>Weekly Forecast</h2>
             <ul class="forecast__list">
@@ -47,6 +48,6 @@
       </section>
 
     </main>
-    <script type="module" src="/main.js"></script>
+    <script type="module" src="/src/scripts/main.js"></script>
   </body>
 </html>
