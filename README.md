@@ -2,6 +2,8 @@ This is a frontend project scaffolded with [vite](https://vitejs.dev/guide/)'s v
 
 Live Link:  https://gorilla-weather.vercel.app/
 
+** ALTERNATE VERSION ** -- Instead of vite, there's also a nodejs / esbuild version that runs in almost the same way. https://github.com/kkv263/weather
+
 ## Running Locally
 
 First, visit: The Foreca at https://developer.foreca.com/, sign up for a free trial account, and generate an API key. Keep this handy until later
