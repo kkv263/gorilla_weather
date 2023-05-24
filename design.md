@@ -28,6 +28,8 @@ Before reading on, I recommend you have the live link open to compare and have a
 
 ## Code Implementation 
 #### Tech Stack:
+**ALTERNATE VERSION** -- In this version I use vanilla css and nodejs/esbuild if vite is preferred. https://github.com/kkv263/weather
+
 - Vanilla JS
 - HTML
 - SCSS
