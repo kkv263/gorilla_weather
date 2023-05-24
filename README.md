@@ -2,7 +2,7 @@ This is a frontend project scaffolded with [vite](https://vitejs.dev/guide/)'s v
 
 Live Link:  https://gorilla-weather.vercel.app/
 
-** ALTERNATE VERSION ** -- Instead of vite, there's also a nodejs / esbuild version that runs in almost the same way. https://github.com/kkv263/weather
+***ALTERNATE VERSION*** -- Instead of vite, there's also a nodejs / esbuild version that runs in almost the same way. https://github.com/kkv263/weather
 
 ## Running Locally
 
