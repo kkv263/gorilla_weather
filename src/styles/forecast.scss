@@ -133,6 +133,24 @@
 .forecast__summary {
   padding: 16px 16px 16px 0;
 
+  .summary-generated {
+    &:first-letter {
+      color: $off-black;
+      padding: 0 8px;
+      margin: 0 12px 0 0;
+      border: 2px solid;
+      border-radius: 4px;
+      font-family: $primary-font, cursive;
+      font-size: 48px;
+      float: left;
+      line-height: 1;
+  
+      @media (max-width: 767px) {
+        font-size: 64px;
+      }
+    }
+  }
+
   @media (max-width: 767px) {
     font-size: 14px;
   }

@@ -207,8 +207,7 @@ const fetchWeather = (location, name, timezone) => {
       }
 
       typeWriter();
-
-      // summary.textContent = msg.message.content;
+      summary.classList.add('summary-generated')
     }).catch((error) => {console.log(error)});
   });
 }
